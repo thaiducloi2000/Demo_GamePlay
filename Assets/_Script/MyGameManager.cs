@@ -8,11 +8,12 @@ public class MyGameManager : MonoBehaviour
     public GameObject specialUnitPrefab;
     public List<Transform> normalUnit;
     public List<Transform> SpecialUnit;
-    List<GameObject> list;
+    public List<GameObject> listNode;
     public static MyGameManager instance;
     private Node startNode;
     private Node endNode;
     TurnManager turnManager;
+    public Canvas UI;
 
 
     public Node StartNode { get => startNode; set => startNode = value; }
@@ -31,8 +32,8 @@ public class MyGameManager : MonoBehaviour
     void Start()
     {
         turnManager = TurnManager.instance;
-        this.list = LocationSpawn();
-        foreach (GameObject obj in this.list)
+        this.listNode = getListNode();
+        foreach (GameObject obj in this.listNode)
         {
             Node node = obj.GetComponent<Node>();
             if (obj.name != "A Side" && obj.name != "B Side")
@@ -44,17 +45,17 @@ public class MyGameManager : MonoBehaviour
                 node._startNumchess = 1;
             }
         }
-        foreach (GameObject obj in this.list)
-        {
-            if (obj.name == "A Side" || obj.name == "B Side")
-            {
-                Instantiate(specialUnitPrefab, obj.transform.GetChild(0).position, Quaternion.identity);
-            }
-            if (obj.name != "A Side" && obj.name != "B Side")
-            {
-                SpawnChess(obj.transform.GetChild(0),obj.GetComponent<Node>()._startNumchess,normalUnitPrefab);
-            }
-        }       
+        //foreach (GameObject obj in this.listNode)
+        //{
+        //    if (obj.name == "A Side" || obj.name == "B Side")
+        //    {
+        //        Instantiate(specialUnitPrefab, obj.transform.GetChild(0).position, Quaternion.identity);
+        //    }
+        //    if (obj.name != "A Side" && obj.name != "B Side")
+        //    {
+        //        SpawnChess(obj.transform.GetChild(0),obj.GetComponent<Node>()._startNumchess,normalUnitPrefab);
+        //    }
+        //}       
     }
 
     public void Move(Node node)
@@ -75,43 +76,33 @@ public class MyGameManager : MonoBehaviour
         }
     }
 
-    private void SpawnChess(Transform obj,int v,GameObject unit)
-    {
-        List<Vector3> listPosition = new List<Vector3>();
-        int i = 0;
-        do
-        {
-            Vector3 position = new Vector3(Random.Range(-0.3F, 0.3F), 0, Random.Range(-0.3F, 0.3F));
-            if (!listPosition.Contains(position))
-            {
-                Instantiate(unit, obj.position + position, Quaternion.identity);
-                listPosition.Add(position);
-                i++;
-            }
-        } while (i != v);
-    }
+    //private void SpawnChess(Transform obj,int v,GameObject unit)
+    //{
+    //    List<Vector3> listPosition = new List<Vector3>();
+    //    int i = 0;
+    //    do
+    //    {
+    //        Vector3 position = new Vector3(Random.Range(-0.3F, 0.3F), 0, Random.Range(-0.3F, 0.3F));
+    //        if (!listPosition.Contains(position))
+    //        {
+    //            Instantiate(unit, obj.position + position, Quaternion.identity);
+    //            listPosition.Add(position);
+    //            i++;
+    //        }
+    //    } while (i != v);
+    //}
 
 
-    private List<GameObject> LocationSpawn()
+    private List<GameObject> getListNode()
     {
         GameObject _chessboard=GameObject.FindGameObjectWithTag("ChessBoard").gameObject;
-        List<GameObject> spawned = new List<GameObject>();
+        List<GameObject> listNode = new List<GameObject>();
 
         for(int i = 0; i<_chessboard.transform.childCount; i++)
         {
-            spawned.Add(_chessboard.transform.GetChild(i).gameObject);
+            listNode.Add(_chessboard.transform.GetChild(i).gameObject);
         }
-        return spawned;
+        return listNode;
     }
 
-    //private void SelectNodeAt(Node node)
-    //{
-    //    if (node._Numchess == 0)
-    //    {
-    //        Debug.Log("There is no unit to select");
-    //        return;
-    //    }
-       
-    //    node._Numchess = 0;
-    //}
 }

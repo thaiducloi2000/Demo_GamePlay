@@ -82,24 +82,26 @@ public class TurnManager : MonoBehaviour
     {
         if (lastMoveNode.name == "A Side")
         {
-            Debug.Log("break At 1");
             return true;
         }
         if (lastMoveNode.name == "B Side")
         {
-            Debug.Log("break At 2");
             return true;
         }
         if (status == 1)
         {
             if (lastMoveNode.backNode._Numchess == 0 && lastMoveNode.backNode.backNode._Numchess == 0)
             {
-                Debug.Log("break At 3");
                 return true;
             }
             if (lastMoveNode.backNode._Numchess == 0 && (lastMoveNode.backNode.backNode.name == "B Side" || lastMoveNode.backNode.backNode.name == "A Side"))
+            {               
+                return true;
+            }
+            if (lastMoveNode.backNode._Numchess == 0 && lastMoveNode.backNode.backNode._Numchess != 0)
             {
-                Debug.Log("break At 4");
+                Debug.Log("Eat Chess Back");
+                lastMoveNode.backNode.backNode._Numchess = 0;
                 return true;
             }
         }
@@ -108,12 +110,15 @@ public class TurnManager : MonoBehaviour
 
             if (lastMoveNode.frontNode._Numchess == 0 && lastMoveNode.frontNode.frontNode._Numchess == 0)
             {
-                Debug.Log("break At 5");
                 return true;
             }
             if (lastMoveNode.frontNode._Numchess == 0 && (lastMoveNode.frontNode.frontNode.name == "B Side" || lastMoveNode.frontNode.frontNode.name == "A Side"))
             {
-                Debug.Log("break At 6");
+                return true;
+            }if(lastMoveNode.frontNode._Numchess == 0 && lastMoveNode.frontNode.frontNode._Numchess != 0)
+            {
+                Debug.Log("Eat Chess Front");
+                lastMoveNode.frontNode.frontNode._Numchess = 0;
                 return true;
             }
         }
