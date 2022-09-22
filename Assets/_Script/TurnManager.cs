@@ -3,6 +3,7 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager instance;
+    public bool getPoint = false;
 
     void Awake()
     {
@@ -37,12 +38,10 @@ public class TurnManager : MonoBehaviour
     {
         if (numOfUnit == 0 && checkFinishMove(frontNode,0))
         {
-            Debug.Log("End At Node " + frontNode.name);
             return;
         }
         if (numOfUnit == 0)
         {
-            Debug.Log("Front Moving ,Num of unit = 0 ");
             int unit = frontNode._Numchess;
             frontNode._Numchess = 0;
             MovingFront(frontNode.frontNode, unit); // Release when it have eating point
@@ -51,7 +50,6 @@ public class TurnManager : MonoBehaviour
         if(numOfUnit > 0)
         {
             frontNode._Numchess += 1;
-            Debug.Log(frontNode.name + " has " + frontNode._Numchess + " , Last Unit has " + (numOfUnit-1));
             MovingFront(frontNode.frontNode, numOfUnit - 1);
         }
               
@@ -60,11 +58,9 @@ public class TurnManager : MonoBehaviour
     {
         if(numOfUnit == 0 && checkFinishMove(backNode,1))
         {
-            Debug.Log("End At Node "+ backNode.name);
             return;
         }if(numOfUnit == 0)
         {
-            Debug.Log("Back Moving,Num of unit = 0 ");
             int unit = backNode._Numchess;
             backNode._Numchess = 0;
             MovingBack(backNode.backNode, unit); // Release when it have eating point
@@ -73,7 +69,6 @@ public class TurnManager : MonoBehaviour
         if(numOfUnit > 0)
         {
             backNode._Numchess += 1;
-            Debug.Log(backNode.name+" has " + backNode._Numchess + " , Last Unit has " + (numOfUnit-1));
             MovingBack(backNode.backNode, numOfUnit - 1);
         }        
     }
@@ -94,13 +89,17 @@ public class TurnManager : MonoBehaviour
             {
                 return true;
             }
-            if (lastMoveNode.backNode._Numchess == 0 && (lastMoveNode.backNode.backNode.name == "B Side" || lastMoveNode.backNode.backNode.name == "A Side"))
-            {               
-                return true;
-            }
-            if (lastMoveNode.backNode._Numchess == 0 && lastMoveNode.backNode.backNode._Numchess != 0)
+            else if(lastMoveNode.backNode._Numchess == 0 && (lastMoveNode.backNode.backNode.name == "B Side" || lastMoveNode.backNode.backNode.name == "A Side"))
             {
                 Debug.Log("Eat Chess Back");
+                getPoint = true;
+                lastMoveNode.backNode.backNode._Numchess = 0;
+                return true;
+            }
+            else if(lastMoveNode.backNode._Numchess == 0 && lastMoveNode.backNode.backNode._Numchess != 0)
+            {
+                Debug.Log("Eat Chess Back");
+                getPoint = true;
                 lastMoveNode.backNode.backNode._Numchess = 0;
                 return true;
             }
@@ -112,12 +111,16 @@ public class TurnManager : MonoBehaviour
             {
                 return true;
             }
-            if (lastMoveNode.frontNode._Numchess == 0 && (lastMoveNode.frontNode.frontNode.name == "B Side" || lastMoveNode.frontNode.frontNode.name == "A Side"))
-            {
-                return true;
-            }if(lastMoveNode.frontNode._Numchess == 0 && lastMoveNode.frontNode.frontNode._Numchess != 0)
+            else if (lastMoveNode.frontNode._Numchess == 0 && (lastMoveNode.frontNode.frontNode.name == "B Side" || lastMoveNode.frontNode.frontNode.name == "A Side"))
             {
                 Debug.Log("Eat Chess Front");
+                getPoint = true;
+                lastMoveNode.frontNode.frontNode._Numchess = 0;
+                return true;
+            }else if(lastMoveNode.frontNode._Numchess == 0 && lastMoveNode.frontNode.frontNode._Numchess != 0)
+            {
+                Debug.Log("Eat Chess Front");
+                getPoint = true;
                 lastMoveNode.frontNode.frontNode._Numchess = 0;
                 return true;
             }
@@ -130,7 +133,8 @@ public class TurnManager : MonoBehaviour
         Renderer rend_1=selectNode.GetComponent<Renderer>();
         Renderer rend_2= choiceNode.GetComponent<Renderer>();
         rend_1.material.color=Color.white;
-        rend_2.material.color = Color.white;
+        rend_1.material.color = selectNode._defaultColor;
+        rend_2.material.color = choiceNode._defaultColor;
         selectNode._isSelected = false;
         choiceNode._isSelected = false;
     }

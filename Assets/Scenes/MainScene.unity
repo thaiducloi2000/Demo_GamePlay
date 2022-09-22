@@ -171,6 +171,7 @@ MonoBehaviour:
   specialUnitPrefab: {fileID: 4623018037624650181, guid: b5634511474679a458ebce2974c70c65, type: 3}
   normalUnit: []
   SpecialUnit: []
+  listNode: []
   UI: {fileID: 0}
 --- !u!114 &142121400
 MonoBehaviour:
@@ -387,6 +388,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -459,6 +461,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+--- !u!45 &963194229
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 0}
 --- !u!114 &1113852887 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1494822764, guid: 6d740cc778f139b4ab0cc2e8ef3f9106, type: 3}
@@ -594,12 +605,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Numchess: 0
+  _CurrentNumChess: 0
   _startNumchess: 0
   _isSelected: 0
   _defaultColor: {r: 0, g: 0, b: 0, a: 0}
   backNode: {fileID: 2115743514}
   frontNode: {fileID: 1175451462}
   gameManager: {fileID: 0}
+  chess: {fileID: 0}
 --- !u!114 &1484041443 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1246089632, guid: 6d740cc778f139b4ab0cc2e8ef3f9106, type: 3}
@@ -651,12 +664,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Numchess: 0
+  _CurrentNumChess: 0
   _startNumchess: 0
   _isSelected: 0
   _defaultColor: {r: 0, g: 0, b: 0, a: 0}
   backNode: {fileID: 781264809}
   frontNode: {fileID: 900852800}
   gameManager: {fileID: 0}
+  chess: {fileID: 0}
 --- !u!114 &2086573579 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 934999142, guid: 6d740cc778f139b4ab0cc2e8ef3f9106, type: 3}

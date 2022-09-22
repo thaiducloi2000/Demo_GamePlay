@@ -59,6 +59,7 @@
     <Compile Include="Assets\_Script\TurnManager.cs" />
     <Compile Include="Assets\_Script\MyGameManager.cs" />
     <Compile Include="Assets\_Script\Node.cs" />
+    <Compile Include="Assets\_Script\Player.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

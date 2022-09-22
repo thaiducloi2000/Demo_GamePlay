@@ -13,7 +13,8 @@ public class MyGameManager : MonoBehaviour
     private Node startNode;
     private Node endNode;
     TurnManager turnManager;
-    public Canvas UI;
+    //public Canvas UI;
+    public Player player;
 
 
     public Node StartNode { get => startNode; set => startNode = value; }
@@ -24,7 +25,7 @@ public class MyGameManager : MonoBehaviour
         Application.targetFrameRate = 60;
         if (instance != null)
         {
-            Debug.LogError("THere are more  than 1 instance");
+            Debug.LogError("There are more  than 1 instance");
             return;
         }
         instance = this;
@@ -32,6 +33,10 @@ public class MyGameManager : MonoBehaviour
     void Start()
     {
         turnManager = TurnManager.instance;
+        if(player == null)
+        {
+            player = new Player();
+        }
         this.listNode = getListNode();
         foreach (GameObject obj in this.listNode)
         {
@@ -92,6 +97,20 @@ public class MyGameManager : MonoBehaviour
     //    } while (i != v);
     //}
 
+    public void addPoint()
+    {
+        this.player.Point += 1;
+        turnManager.getPoint = false;
+        Debug.Log(this.player.Point);
+    }
+
+    private void Update()
+    {
+        if (turnManager.getPoint == true)
+        {
+            addPoint();
+        }
+    }
 
     private List<GameObject> getListNode()
     {

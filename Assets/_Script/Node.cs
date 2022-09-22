@@ -30,10 +30,10 @@ public class Node : MonoBehaviour
         _Numchess = _CurrentNumChess = _startNumchess;
         //turnManager = TurnManager.instance;
         gameManager = MyGameManager.instance;
-        SpawnUnit(_startNumchess);
+        SpawnUnit(_startNumchess,chess);
     }
 
-    void SpawnUnit(int num)
+    void SpawnUnit(int num,GameObject unit)
     {
         Transform point = this.gameObject.transform.GetChild(0);
         List<Vector3> listPosition = new List<Vector3>();
@@ -42,13 +42,15 @@ public class Node : MonoBehaviour
             Vector3 position = new Vector3(Random.Range(-0.3F, 0.3F), 0, Random.Range(-0.3F, 0.3F));
             if (this.name == "A Side" || this.name == "B Side")
             {
-                   Instantiate(chess, this.gameObject.transform.GetChild(0).position + position, Quaternion.identity);
+                    GameObject child = Instantiate(unit, this.gameObject.transform.GetChild(0).position + position, Quaternion.identity);
+                    child.transform.parent = this.transform;
+                    listPosition.Add(position);
             }
             else
             {
                 if (!listPosition.Contains(position))
                 {
-                    GameObject child = Instantiate(chess, point.position + position, Quaternion.identity);
+                    GameObject child = Instantiate(unit, point.position + position, Quaternion.identity);
                     child.transform.parent = this.transform;
                     listPosition.Add(position);
                 }
@@ -59,10 +61,10 @@ public class Node : MonoBehaviour
     void DeleteChangeNumChess(int num)
     {
 
-        for (int i = 0; i < num; i++)
+        for (int i = 1; i <= num; i++)
         {
             Transform pos = this.GetComponent<Transform>();
-            GameObject chess = pos.GetChild(1).gameObject;
+            GameObject chess = pos.GetChild(i).gameObject;
             Destroy(chess);
         }
     }
@@ -74,7 +76,7 @@ public class Node : MonoBehaviour
             if(_CurrentNumChess - _Numchess < 0)
             {
                 int Changenumber = _Numchess - _CurrentNumChess;
-                SpawnUnit(Changenumber);
+                SpawnUnit(Changenumber,Resources.Load<GameObject>("_Prefabs/Chess"));
                 _CurrentNumChess = _Numchess;
                 Debug.Log(this.name + " Spawn " + Changenumber);
             }
@@ -101,13 +103,11 @@ public class Node : MonoBehaviour
         {
             this._isSelected = true;
             rend.material.color = Color.red;
-            Debug.Log(this.name + " is selected...");
         }
         else
         {
             this._isSelected = false;
             rend.material.color = _defaultColor;
-            Debug.Log(this.name + " is not selected...");
         }
     }
 
@@ -117,11 +117,11 @@ public class Node : MonoBehaviour
         //Renderer rend = this.GetComponent<Renderer>();
         if (this._Numchess == 0)
         {
-            Debug.Log("Can't Select This....");
+            Debug.Log("1");
         }
         if ((this.name == "A Side" || this.name == "B Side") && (this.frontNode._isSelected == true || this.backNode._isSelected == true))
         {
-            Debug.Log("Can't Select This....");
+            Debug.Log("2");
         }
         if (this._isSelected == true)
         {
