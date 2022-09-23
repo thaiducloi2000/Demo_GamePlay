@@ -43,7 +43,7 @@ public class MyGameManager : MonoBehaviour
             Node node = obj.GetComponent<Node>();
             if (obj.name != "A Side" && obj.name != "B Side")
             {
-                node._startNumchess = 5;
+                node._startNumchess = 5 ;
             }
             else
             {

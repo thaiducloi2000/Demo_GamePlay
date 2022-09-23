@@ -78,20 +78,20 @@ public class Node : MonoBehaviour
                 int Changenumber = _Numchess - _CurrentNumChess;
                 SpawnUnit(Changenumber,Resources.Load<GameObject>("_Prefabs/Chess"));
                 _CurrentNumChess = _Numchess;
-                Debug.Log(this.name + " Spawn " + Changenumber);
+                //Debug.Log(this.name + " Spawn " + Changenumber);
             }
             else if(_CurrentNumChess - _Numchess > 0)
             {
                 int Changenumber = _CurrentNumChess - _Numchess;
                 DeleteChangeNumChess(Changenumber);
                 _CurrentNumChess = _Numchess;
-                Debug.Log(this.name + " Delete " + Changenumber);
+                //Debug.Log(this.name + " Delete " + Changenumber);
             }
             else if (_CurrentNumChess - _Numchess == 0)
             {
                 DeleteChangeNumChess(_CurrentNumChess);
                 _CurrentNumChess = _Numchess = 0;
-                Debug.Log(this.name + " = 0");
+                //Debug.Log(this.name + " = 0");
             }
         }
     }

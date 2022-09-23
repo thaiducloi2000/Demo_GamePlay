@@ -18,19 +18,16 @@ public class TurnManager : MonoBehaviour
 
     public void Move(Node startNode,Node endNode)
     {
+        int unit = startNode._Numchess;
+        startNode._Numchess = 0;
+        reset(startNode, endNode);
         if (startNode.frontNode.name == endNode.name)
         {
-            int unit = startNode._Numchess;
-            startNode._Numchess = 0;
             MovingFront(endNode, unit);
-            reset(startNode,endNode);
         }
         else if (startNode.backNode.name == endNode.name)
         {
-            int unit = startNode._Numchess;
-            startNode._Numchess = 0;
             MovingBack(endNode, unit);
-            reset(startNode, endNode);
         }
     }
 
@@ -38,94 +35,93 @@ public class TurnManager : MonoBehaviour
     {
         if (numOfUnit == 0 && checkFinishMove(frontNode,0))
         {
-            return;
+            return ;
         }
-        if (numOfUnit == 0)
+        else if (numOfUnit == 0)
         {
             int unit = frontNode._Numchess;
             frontNode._Numchess = 0;
             MovingFront(frontNode.frontNode, unit); // Release when it have eating point
             //MovingFront(frontNode, frontNode._Numchess);
         }
-        if(numOfUnit > 0)
+        else if(numOfUnit >= 1)
         {
-            frontNode._Numchess += 1;
+            frontNode._Numchess ++; // bug here
             MovingFront(frontNode.frontNode, numOfUnit - 1);
         }
-              
+        //Debug.Log(frontNode.name + " : " + frontNode._Numchess);
     }
     public void MovingBack(Node backNode, int numOfUnit)
     {
-        if(numOfUnit == 0 && checkFinishMove(backNode,1))
+        if (numOfUnit == 0 && checkFinishMove(backNode,1))
         {
             return;
-        }if(numOfUnit == 0)
+        }
+        else if(numOfUnit == 0)
         {
             int unit = backNode._Numchess;
             backNode._Numchess = 0;
             MovingBack(backNode.backNode, unit); // Release when it have eating point
             //MovingBack(backNode, backNode._Numchess);
         }
-        if(numOfUnit > 0)
+        else if(numOfUnit >= 1)
         {
-            backNode._Numchess += 1;
+            backNode._Numchess ++;// bug here
             MovingBack(backNode.backNode, numOfUnit - 1);
-        }        
+        }
+        //Debug.Log(backNode.name + " : " + backNode._Numchess);
     }
    
     public bool checkFinishMove(Node lastMoveNode,int status)
     {
+        bool result = false;
         if (lastMoveNode.name == "A Side")
         {
-            return true;
+            result = true;
         }
-        if (lastMoveNode.name == "B Side")
+        else if (lastMoveNode.name == "B Side")
         {
-            return true;
+            result = true;
         }
-        if (status == 1)
+        else if (status == 1)
         {
-            if (lastMoveNode.backNode._Numchess == 0 && lastMoveNode.backNode.backNode._Numchess == 0)
+            if (lastMoveNode._Numchess == 0 && lastMoveNode.backNode._Numchess == 0)
             {
-                return true;
+                result = true;
             }
-            else if(lastMoveNode.backNode._Numchess == 0 && (lastMoveNode.backNode.backNode.name == "B Side" || lastMoveNode.backNode.backNode.name == "A Side"))
+            else if(lastMoveNode._Numchess == 0 && (lastMoveNode.backNode.name == "B Side" || lastMoveNode.backNode.name == "A Side"))
             {
-                Debug.Log("Eat Chess Back");
-                getPoint = true;
-                lastMoveNode.backNode.backNode._Numchess = 0;
-                return true;
+                //getPoint = true;
+                lastMoveNode.backNode._Numchess = 0;
+                result = true;
             }
-            else if(lastMoveNode.backNode._Numchess == 0 && lastMoveNode.backNode.backNode._Numchess != 0)
+            else if(lastMoveNode._Numchess == 0 && lastMoveNode.backNode._Numchess != 0)
             {
-                Debug.Log("Eat Chess Back");
-                getPoint = true;
-                lastMoveNode.backNode.backNode._Numchess = 0;
-                return true;
+                //getPoint = true;
+                lastMoveNode.backNode._Numchess = 0;
+                result = true;
             }
         }
-        if(status == 0)
+        else if(status == 0)
         {
 
-            if (lastMoveNode.frontNode._Numchess == 0 && lastMoveNode.frontNode.frontNode._Numchess == 0)
+            if (lastMoveNode._Numchess == 0 && lastMoveNode.frontNode._Numchess == 0)
             {
-                return true;
+                result = true;
             }
-            else if (lastMoveNode.frontNode._Numchess == 0 && (lastMoveNode.frontNode.frontNode.name == "B Side" || lastMoveNode.frontNode.frontNode.name == "A Side"))
+            else if (lastMoveNode._Numchess == 0 && (lastMoveNode.frontNode.name == "B Side" || lastMoveNode.frontNode.name == "A Side"))
             {
-                Debug.Log("Eat Chess Front");
-                getPoint = true;
-                lastMoveNode.frontNode.frontNode._Numchess = 0;
-                return true;
-            }else if(lastMoveNode.frontNode._Numchess == 0 && lastMoveNode.frontNode.frontNode._Numchess != 0)
+                //getPoint = true;
+                lastMoveNode.frontNode._Numchess = 0;
+                result = true;
+            }else if(lastMoveNode._Numchess == 0 && lastMoveNode.frontNode._Numchess != 0)
             {
-                Debug.Log("Eat Chess Front");
-                getPoint = true;
-                lastMoveNode.frontNode.frontNode._Numchess = 0;
-                return true;
+                //getPoint = true;
+                lastMoveNode.frontNode._Numchess = 0;
+                result = true;
             }
         }
-        return false;
+        return result;
     }
 
     public void reset(Node selectNode,Node choiceNode)
