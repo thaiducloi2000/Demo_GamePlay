@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 public class MyGameManager : MonoBehaviour
@@ -10,6 +11,8 @@ public class MyGameManager : MonoBehaviour
     public List<Transform> SpecialUnit;
     public List<GameObject> listNode;
     public static MyGameManager instance;
+    public GameObject A_Side;
+    public GameObject B_Side;
     private Node startNode;
     private Node endNode;
     TurnManager turnManager;
@@ -99,9 +102,10 @@ public class MyGameManager : MonoBehaviour
 
     public void addPoint()
     {
-        this.player.Point += 1;
+        this.player.Point += turnManager.point;
         turnManager.getPoint = false;
-        Debug.Log(this.player.Point);
+        turnManager.point = 0;
+        Debug.Log(this.player.name + " - " + this.player.Point);
     }
 
     private void Update()
@@ -110,6 +114,14 @@ public class MyGameManager : MonoBehaviour
         {
             addPoint();
         }
+    }
+
+
+    bool GameOver()
+    {
+        Node a_side = this.A_Side.GetComponent<Node>();
+        Node b_side = this.B_Side.GetComponent<Node>();
+        return a_side._Numchess == 0 && b_side._Numchess == 0;
     }
 
     private List<GameObject> getListNode()

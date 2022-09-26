@@ -4,6 +4,7 @@ public class TurnManager : MonoBehaviour
 {
     public static TurnManager instance;
     public bool getPoint = false;
+    public int point = 0;
 
     void Awake()
     {
@@ -18,6 +19,7 @@ public class TurnManager : MonoBehaviour
 
     public void Move(Node startNode,Node endNode)
     {
+        //this.getPoint = false;
         int unit = startNode._Numchess;
         startNode._Numchess = 0;
         reset(startNode, endNode);
@@ -97,7 +99,8 @@ public class TurnManager : MonoBehaviour
             }
             else if(lastMoveNode._Numchess == 0 && lastMoveNode.backNode._Numchess != 0)
             {
-                //getPoint = true;
+                getPoint = true;
+                point = lastMoveNode.backNode._Numchess;
                 lastMoveNode.backNode._Numchess = 0;
                 result = true;
             }
@@ -116,7 +119,8 @@ public class TurnManager : MonoBehaviour
                 result = true;
             }else if(lastMoveNode._Numchess == 0 && lastMoveNode.frontNode._Numchess != 0)
             {
-                //getPoint = true;
+                getPoint = true;
+                point = lastMoveNode.frontNode._Numchess;
                 lastMoveNode.frontNode._Numchess = 0;
                 result = true;
             }
