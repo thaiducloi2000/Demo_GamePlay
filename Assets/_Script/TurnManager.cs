@@ -3,8 +3,9 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager instance;
-    public bool getPoint = false;
-    public int point = 0;
+    public bool swapTurn = false;
+    public PlayerOffline player;
+
 
     void Awake()
     {
@@ -16,13 +17,20 @@ public class TurnManager : MonoBehaviour
         instance = this;
     }
 
+    private void Start()
+    {
+        GameObject tmp_player = GameObject.Find("Player");
+        if (tmp_player != null)
+        {
+            player = tmp_player.GetComponent<PlayerOffline>();
+        }
+    }
 
     public void Move(Node startNode,Node endNode)
     {
         //this.getPoint = false;
         int unit = startNode._Numchess;
         startNode._Numchess = 0;
-        reset(startNode, endNode);
         if (startNode.frontNode.name == endNode.name)
         {
             MovingFront(endNode, unit);
@@ -31,6 +39,8 @@ public class TurnManager : MonoBehaviour
         {
             MovingBack(endNode, unit);
         }
+        startNode.Reset();
+        endNode.Reset();
     }
 
     public void MovingFront(Node frontNode,int numOfUnit)
@@ -48,7 +58,7 @@ public class TurnManager : MonoBehaviour
         }
         else if(numOfUnit >= 1)
         {
-            frontNode._Numchess ++; // bug here
+            frontNode._Numchess ++;
             MovingFront(frontNode.frontNode, numOfUnit - 1);
         }
         //Debug.Log(frontNode.name + " : " + frontNode._Numchess);
@@ -94,13 +104,13 @@ public class TurnManager : MonoBehaviour
             else if(lastMoveNode._Numchess == 0 && (lastMoveNode.backNode.name == "B Side" || lastMoveNode.backNode.name == "A Side"))
             {
                 //getPoint = true;
+                player.point += lastMoveNode.backNode._Numchess;
                 lastMoveNode.backNode._Numchess = 0;
                 result = true;
             }
             else if(lastMoveNode._Numchess == 0 && lastMoveNode.backNode._Numchess != 0)
             {
-                getPoint = true;
-                point = lastMoveNode.backNode._Numchess;
+                player.point += lastMoveNode.backNode._Numchess;
                 lastMoveNode.backNode._Numchess = 0;
                 result = true;
             }
@@ -115,27 +125,16 @@ public class TurnManager : MonoBehaviour
             else if (lastMoveNode._Numchess == 0 && (lastMoveNode.frontNode.name == "B Side" || lastMoveNode.frontNode.name == "A Side"))
             {
                 //getPoint = true;
+                player.point += lastMoveNode.frontNode._Numchess;
                 lastMoveNode.frontNode._Numchess = 0;
                 result = true;
             }else if(lastMoveNode._Numchess == 0 && lastMoveNode.frontNode._Numchess != 0)
             {
-                getPoint = true;
-                point = lastMoveNode.frontNode._Numchess;
+                player.point += lastMoveNode.frontNode._Numchess;
                 lastMoveNode.frontNode._Numchess = 0;
                 result = true;
             }
         }
         return result;
-    }
-
-    public void reset(Node selectNode,Node choiceNode)
-    {
-        Renderer rend_1=selectNode.GetComponent<Renderer>();
-        Renderer rend_2= choiceNode.GetComponent<Renderer>();
-        rend_1.material.color=Color.white;
-        rend_1.material.color = selectNode._defaultColor;
-        rend_2.material.color = choiceNode._defaultColor;
-        selectNode._isSelected = false;
-        choiceNode._isSelected = false;
     }
 }

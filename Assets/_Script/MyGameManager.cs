@@ -16,8 +16,9 @@ public class MyGameManager : MonoBehaviour
     private Node startNode;
     private Node endNode;
     TurnManager turnManager;
+    //UIEndGameController ui_endgame;
     //public Canvas UI;
-    public Player player;
+    //public Player player;
 
 
     public Node StartNode { get => startNode; set => startNode = value; }
@@ -33,13 +34,19 @@ public class MyGameManager : MonoBehaviour
         }
         instance = this;
     }
+    private void FixedUpdate()
+    {
+        EndGame();
+        //ui_endgame.setPoint(turnManager.player.point.ToString(), turnManager.player.name.ToString());
+    }
     void Start()
     {
         turnManager = TurnManager.instance;
-        if(player == null)
-        {
-            player = new Player();
-        }
+        //ui_endgame = UIEndGameController.instance;
+        //if (player == null)
+        //{
+        //    player = new Player();
+        //}
         this.listNode = getListNode();
         foreach (GameObject obj in this.listNode)
         {
@@ -53,26 +60,15 @@ public class MyGameManager : MonoBehaviour
                 node._startNumchess = 1;
             }
         }
-        //foreach (GameObject obj in this.listNode)
-        //{
-        //    if (obj.name == "A Side" || obj.name == "B Side")
-        //    {
-        //        Instantiate(specialUnitPrefab, obj.transform.GetChild(0).position, Quaternion.identity);
-        //    }
-        //    if (obj.name != "A Side" && obj.name != "B Side")
-        //    {
-        //        SpawnChess(obj.transform.GetChild(0),obj.GetComponent<Node>()._startNumchess,normalUnitPrefab);
-        //    }
-        //}       
     }
 
     public void Move(Node node)
     {
-        if (StartNode == null && (node.name != "A Side" || node.name != "B Side"))
+        if (StartNode == null && (node.name != "A Side" || node.name != "B Side") && node._Numchess != 0)
         {
             StartNode = node;
             return;
-        }if(EndNode == null)
+        }else if(EndNode == null)
         {
             EndNode = node;
         }
@@ -84,44 +80,16 @@ public class MyGameManager : MonoBehaviour
         }
     }
 
-    //private void SpawnChess(Transform obj,int v,GameObject unit)
-    //{
-    //    List<Vector3> listPosition = new List<Vector3>();
-    //    int i = 0;
-    //    do
-    //    {
-    //        Vector3 position = new Vector3(Random.Range(-0.3F, 0.3F), 0, Random.Range(-0.3F, 0.3F));
-    //        if (!listPosition.Contains(position))
-    //        {
-    //            Instantiate(unit, obj.position + position, Quaternion.identity);
-    //            listPosition.Add(position);
-    //            i++;
-    //        }
-    //    } while (i != v);
-    //}
 
-    public void addPoint()
-    {
-        this.player.Point += turnManager.point;
-        turnManager.getPoint = false;
-        turnManager.point = 0;
-        Debug.Log(this.player.name + " - " + this.player.Point);
-    }
-
-    private void Update()
-    {
-        if (turnManager.getPoint == true)
-        {
-            addPoint();
-        }
-    }
-
-
-    bool GameOver()
+    void EndGame()
     {
         Node a_side = this.A_Side.GetComponent<Node>();
         Node b_side = this.B_Side.GetComponent<Node>();
-        return a_side._Numchess == 0 && b_side._Numchess == 0;
+        if (a_side._CurrentNumChess == 0 && b_side._CurrentNumChess == 0)
+        {
+            //ui_endgame.title.gameObject.SetActive(true);
+            Debug.Log("Game Over");
+        }
     }
 
     private List<GameObject> getListNode()
