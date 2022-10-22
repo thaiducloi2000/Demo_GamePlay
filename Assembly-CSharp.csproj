@@ -91,6 +91,7 @@
     <Compile Include="Assets\Photon\Fusion\Scripts\FusionStats.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\Prototyping\Assistants\FusionAssistants.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\BurstDeltaCompressor.cs" />
+    <Compile Include="Assets\_Script\Bot_AI.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\Prototyping\NetworkDebugStartGUI.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\FusionStats\FusionStatsUtilities.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\Prototyping\Prefabs\FusionPrototypingPrefabs.cs" />
@@ -98,17 +99,18 @@
     <Compile Include="Assets\Photon\Fusion\Scripts\FusionBurstIntegration.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\Utilities\BoundsTools.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\Prototyping\NetworkSceneManagerDefault.cs" />
+    <Compile Include="Assets\_Script\UIEndGameController.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\Prototyping\ToggleRunnerProvideInput.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\Prototyping\NetworkDebugStart.cs" />
     <Compile Include="Assets\_Script\Player.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\Prototyping\Utilities\FusionScalableIMGUI.cs" />
+    <Compile Include="Assets\_Script\PlayerOffline.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\Prototyping\NetworkRunnerExtensions.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\FusionStats\FusionStatsObjectIds.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\Prototyping\SpawnPoints\PlayerSpawnPointManagerPrototype.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\Prototyping\ControllerPrototype.cs" />
     <Compile Include="Assets\Photon\Fusion\Scripts\FusionGraph.cs" />
-    <Compile Include="Assets\_Script\PlayerOffline.cs" />
-    <Compile Include="Assets\_Script\UIEndGameController.cs" />
+    <Compile Include="Assets\RemoveChess.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

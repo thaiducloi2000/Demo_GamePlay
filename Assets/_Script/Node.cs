@@ -13,7 +13,7 @@ public class Node : MonoBehaviour
     public Node frontNode;
     public MyGameManager gameManager;
     public GameObject chess;
-    public GameObject spawner;
+    //public GameObject spawner;
     //TurnManager turnManager;
 
     void Start()
@@ -31,7 +31,7 @@ public class Node : MonoBehaviour
         _Numchess = _CurrentNumChess = _startNumchess;
         //turnManager = TurnManager.instance;
         gameManager = MyGameManager.instance;
-        spawner = GameObject.Find("Spawner");
+        //spawner = GameObject.Find("Spawner");
         SpawnUnit(_startNumchess,chess);
     }
 
@@ -67,9 +67,11 @@ public class Node : MonoBehaviour
         {
             Transform pos = this.GetComponent<Transform>();
             GameObject chess = pos.GetChild(i).gameObject;
-            Destroy(chess);
+            Animator ani = chess.GetComponent<Animator>();
+            ani.SetBool("isDestroy",true);
         }
     }
+
 
     void FixedUpdate()
     {
@@ -80,20 +82,17 @@ public class Node : MonoBehaviour
                 int Changenumber = _Numchess - _CurrentNumChess;
                 SpawnUnit(Changenumber,Resources.Load<GameObject>("_Prefabs/Chess"));
                 _CurrentNumChess = _Numchess;
-                //Debug.Log(this.name + " Spawn " + Changenumber);
             }
             else if(_CurrentNumChess - _Numchess > 0)
             {
                 int Changenumber = _CurrentNumChess - _Numchess;
                 DeleteChangeNumChess(Changenumber);
                 _CurrentNumChess = _Numchess;
-                //Debug.Log(this.name + " Delete " + Changenumber);
             }
             else if (_CurrentNumChess - _Numchess == 0)
             {
                 DeleteChangeNumChess(_CurrentNumChess);
                 _CurrentNumChess = _Numchess = 0;
-                //Debug.Log(this.name + " = 0");
             }
         }
     }
@@ -115,23 +114,29 @@ public class Node : MonoBehaviour
 
     private void OnMouseDown()
     {
-        checkSelected();
-        //Renderer rend = this.GetComponent<Renderer>();
-        if (this._Numchess == 0)
+        if (!gameManager.EndGame())
         {
-            Debug.Log("1");
-            //return;
-        }
-        if ((this.name == "A Side" || this.name == "B Side") && (this.frontNode._isSelected == true || this.backNode._isSelected == true))
-        {
-            Debug.Log("2");
-            //return;
-        }
-        if (this._isSelected == true)
-        {
-            Spawner player = this.spawner.GetComponent<Spawner>();
-            //gameManager.Move(this);
-            player.nodeName = this.name;
+            checkSelected();
+            //Renderer rend = this.GetComponent<Renderer>();
+            if (gameManager.isPlayerMove())
+            {
+                if (this._Numchess == 0)
+                {
+                    Debug.Log("1");
+                    //return;
+                }
+                if ((this.name == "A Side" || this.name == "B Side") && (this.frontNode._isSelected == true || this.backNode._isSelected == true))
+                {
+                    Debug.Log("2");
+                    //return;
+                }
+                if (this._isSelected == true)
+                {
+                    //Spawner player = this.spawner.GetComponent<Spawner>();
+                    gameManager.Move(this);
+                    //player.nodeName = this.name;
+                }
+            }
         }
     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -15,10 +16,10 @@ public class MyGameManager : MonoBehaviour
     public GameObject B_Side;
     private Node startNode;
     private Node endNode;
+    public Bot_AI bot;
     TurnManager turnManager;
-    //UIEndGameController ui_endgame;
-    //public Canvas UI;
-    //public Player player;
+    UIEndGameController ui_endgame;
+    //public Time time = 15 ;
 
 
     public Node StartNode { get => startNode; set => startNode = value; }
@@ -32,22 +33,19 @@ public class MyGameManager : MonoBehaviour
             Debug.LogError("There are more  than 1 instance");
             return;
         }
+        this.listNode = getListNode();
         instance = this;
     }
     private void FixedUpdate()
     {
         EndGame();
-        //ui_endgame.setPoint(turnManager.player.point.ToString(), turnManager.player.name.ToString());
+        ui_endgame.setPoint(turnManager.player.point.ToString(), turnManager.player.name.ToString(),turnManager.bot.point.ToString());
     }
     void Start()
     {
         turnManager = TurnManager.instance;
-        //ui_endgame = UIEndGameController.instance;
-        //if (player == null)
-        //{
-        //    player = new Player();
-        //}
-        this.listNode = getListNode();
+        ui_endgame = UIEndGameController.instance;
+        
         foreach (GameObject obj in this.listNode)
         {
             Node node = obj.GetComponent<Node>();
@@ -81,15 +79,16 @@ public class MyGameManager : MonoBehaviour
     }
 
 
-    void EndGame()
+    public bool EndGame()
     {
         Node a_side = this.A_Side.GetComponent<Node>();
         Node b_side = this.B_Side.GetComponent<Node>();
         if (a_side._CurrentNumChess == 0 && b_side._CurrentNumChess == 0)
         {
-            //ui_endgame.title.gameObject.SetActive(true);
-            Debug.Log("Game Over");
+            ui_endgame.title.gameObject.SetActive(true);
+            return true;
         }
+        return false;
     }
 
     private List<GameObject> getListNode()
@@ -104,4 +103,8 @@ public class MyGameManager : MonoBehaviour
         return listNode;
     }
 
+    public bool isPlayerMove()
+    {
+        return !turnManager.swapTurn;
+    }
 }
