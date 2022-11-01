@@ -13,8 +13,9 @@ public class Node : MonoBehaviour
     public Node frontNode;
     public MyGameManager gameManager;
     public GameObject chess;
+    public GameObject collider;
     //public GameObject spawner;
-    //TurnManager turnManager;
+    TurnManager turnManager;
 
     void Start()
     {
@@ -29,7 +30,7 @@ public class Node : MonoBehaviour
             chess = Resources.Load<GameObject>("_Prefabs/Chess");
         }
         _Numchess = _CurrentNumChess = _startNumchess;
-        //turnManager = TurnManager.instance;
+        turnManager = TurnManager.instance;
         gameManager = MyGameManager.instance;
         //spawner = GameObject.Find("Spawner");
         SpawnUnit(_startNumchess,chess);
@@ -58,11 +59,12 @@ public class Node : MonoBehaviour
                 }
             }
         }
+        //this.collider.SetActive(false);
     }
 
     void DeleteChangeNumChess(int num)
     {
-
+        Debug.Log(this.name + " - " + num);
         for (int i = 1; i <= num; i++)
         {
             Transform pos = this.GetComponent<Transform>();
@@ -72,27 +74,20 @@ public class Node : MonoBehaviour
         }
     }
 
-
-    void FixedUpdate()
+    public void checkChessNum()
     {
-        if(_CurrentNumChess != _Numchess)
+        if (this._CurrentNumChess != this._Numchess)
         {
-            if(_CurrentNumChess - _Numchess < 0)
+            if (this._CurrentNumChess - this._Numchess > 0)
             {
-                int Changenumber = _Numchess - _CurrentNumChess;
-                SpawnUnit(Changenumber,Resources.Load<GameObject>("_Prefabs/Chess"));
-                _CurrentNumChess = _Numchess;
-            }
-            else if(_CurrentNumChess - _Numchess > 0)
-            {
-                int Changenumber = _CurrentNumChess - _Numchess;
+                int Changenumber = this._CurrentNumChess - this._Numchess;
                 DeleteChangeNumChess(Changenumber);
-                _CurrentNumChess = _Numchess;
+                this._CurrentNumChess = this._Numchess;
             }
             else if (_CurrentNumChess - _Numchess == 0)
             {
                 DeleteChangeNumChess(_CurrentNumChess);
-                _CurrentNumChess = _Numchess = 0;
+                this._CurrentNumChess = this._Numchess = 0;
             }
         }
     }
@@ -118,22 +113,21 @@ public class Node : MonoBehaviour
         {
             checkSelected();
             //Renderer rend = this.GetComponent<Renderer>();
-            if (gameManager.isPlayerMove())
+            if (gameManager.isPlayerMove() == true)
             {
                 if (this._Numchess == 0)
                 {
-                    Debug.Log("1");
                     //return;
                 }
                 if ((this.name == "A Side" || this.name == "B Side") && (this.frontNode._isSelected == true || this.backNode._isSelected == true))
                 {
-                    Debug.Log("2");
                     //return;
                 }
                 if (this._isSelected == true)
                 {
                     //Spawner player = this.spawner.GetComponent<Spawner>();
                     gameManager.Move(this);
+                    //collider.SetActive(true);
                     //player.nodeName = this.name;
                 }
             }

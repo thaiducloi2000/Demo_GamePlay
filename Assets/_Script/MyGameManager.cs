@@ -65,6 +65,7 @@ public class MyGameManager : MonoBehaviour
         if (StartNode == null && (node.name != "A Side" || node.name != "B Side") && node._Numchess != 0)
         {
             StartNode = node;
+            HightLight(node);
             return;
         }else if(EndNode == null)
         {
@@ -73,11 +74,21 @@ public class MyGameManager : MonoBehaviour
         if (StartNode != null && EndNode != null)
         {
             turnManager.Move(StartNode,EndNode);
+            StartNode.backNode.Reset();
+            StartNode.frontNode.Reset();
             StartNode = null;
             EndNode = null;
         }
     }
 
+
+    public void HightLight(Node node)
+    {
+        Renderer nodeColorFront = node.frontNode.GetComponent<Renderer>();
+        Renderer nodeColorBack = node.backNode.GetComponent<Renderer>();
+        nodeColorFront.material.color = Color.blue;
+        nodeColorBack.material.color = Color.blue;
+    }
 
     public bool EndGame()
     {
@@ -98,6 +109,7 @@ public class MyGameManager : MonoBehaviour
 
         for(int i = 0; i<_chessboard.transform.childCount; i++)
         {
+            if(_chessboard.transform.GetChild(i).gameObject.name != "Colider")
             listNode.Add(_chessboard.transform.GetChild(i).gameObject);
         }
         return listNode;

@@ -7,8 +7,9 @@ public class Bot_AI : MonoBehaviour
 {
     public new const string name = "BOT";
     public int point = 0;
-    public const float waitTime = 2f;
-    public float countTime = 2f;
+    public const float waitTime = 10f;
+    public float countTime = 10f;
+    public bool isBot = false;
     
     public List<Node> nodes;
     MyGameManager gameManager;
@@ -37,11 +38,12 @@ public class Bot_AI : MonoBehaviour
 
     private void Update()
     {
-        if (!gameManager.isPlayerMove())
+        if (isBot == true)
         {
             if (countTime <= 0f)
             {
                 BotMove();
+                this.isBot = false;
                 countTime = waitTime;
             }
             countTime -= Time.deltaTime;
@@ -49,7 +51,7 @@ public class Bot_AI : MonoBehaviour
     }
 
 
-    private void BotMove()
+    public void BotMove()
     {
         System.Random rand = new System.Random();
         int num_1 = rand.Next(0,2);
@@ -84,5 +86,6 @@ public class Bot_AI : MonoBehaviour
                 }
             }
         }
+        isBot = false;
     }
 }
